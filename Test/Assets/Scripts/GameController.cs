@@ -59,4 +59,8 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene("Level_4");
     }
+    public void CharacterSelect()
+    {
+        SceneManager.LoadScene("SelectScene");
+    }
 }
