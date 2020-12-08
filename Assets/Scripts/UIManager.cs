@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject MainUI;
     public GameObject SelectUI;
+    public GameObject ResetMenu;
 
     public Button[] lvButtons; // 스테이지 버튼을 리스트로 관리
 
@@ -33,8 +34,6 @@ public class UIManager : MonoBehaviour
                 lvButtons[i].interactable = false;
             }
         }
-
-
 
         ui[0].onClick.AddListener(() => // Select화면으로 전환 (MainUI 비활성화 && SelectUI 활성화)
         {
@@ -56,10 +55,9 @@ public class UIManager : MonoBehaviour
             Debug.Log("게임종료");
         });
 
-        ui[3].onClick.AddListener(() => // Reset
+        ui[3].onClick.AddListener(() => // Reset메뉴 활성화
         {
-            PlayerPrefs.DeleteAll();
-            Debug.Log("Reset");
+            ResetMenu.gameObject.SetActive(true);
         });
 
         ui[4].onClick.AddListener(() => //TutorialScene
@@ -113,14 +111,26 @@ public class UIManager : MonoBehaviour
             Debug.Log("캐릭터창");
         });
 
-        if (Movement.isUIChange == true)
+        ui[10].onClick.AddListener(() => // 리셋 확인
+        {
+            PlayerPrefs.DeleteAll();
+            SceneManager.LoadScene("MainScene");
+            Debug.Log("Reset하고 Select화면으로 전환");
+        });
+
+        ui[11].onClick.AddListener(() => // 리셋취소
+        {
+            ResetMenu.gameObject.SetActive(false);
+        });
+
+        if (Movement.isUIChange == true) // 뒤로가기를 누르면 select화면으로 전환
         {
             SelectUI.gameObject.SetActive(true);
             MainUI.gameObject.SetActive(false);
             Debug.Log("Select화면으로 전환");
         }
 
-        if (CarSelection.isChrChange == true)
+        if (CarSelection.isChrChange == true) // 뒤로가기를 누르면 select화면으로 전환
         {
             SelectUI.gameObject.SetActive(true);
             MainUI.gameObject.SetActive(false);
@@ -132,6 +142,25 @@ public class UIManager : MonoBehaviour
             SelectUI.gameObject.SetActive(true);
             MainUI.gameObject.SetActive(false);
             Debug.Log("CharacterSelect 화면에서 Select화면으로 전환");
+        }
+
+        if(GameController.isStageNext == true)
+        {
+            SelectUI.gameObject.SetActive(true);
+            MainUI.gameObject.SetActive(false);
+            Debug.Log("Select화면으로 전환");
+            isStage_1 = false;
+            isStage_2 = false;
+            isStage_3 = false;
+            isStage_4 = false;
+
+        }
+
+        if(GameController.isTutorialNext == true)
+        {
+            SelectUI.gameObject.SetActive(false);
+            MainUI.gameObject.SetActive(true);
+            Debug.Log("Main화면으로 전환");
         }
 
     }

@@ -8,15 +8,21 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    /*public static bool isGo = false;
-    public static bool isStop = false;
+    
+    public static bool isTutorialNext = false;
+    public static bool isStageNext = false;
 
-    private float countdown = 3;
-    public Text time;*/
     public VideoPlayer video;
-    public GameObject videoscreen;
-    public Button skipButton;
 
+    public GameObject videoscreen;
+    public GameObject Endscreen;
+    public GameObject TutorialEndscreen;
+    //public GameObject EndTrigger;
+
+    public Button skipButton;
+    public Button stageNextButton;
+    public Button tutorialNextButton;
+    
     public GameObject[] CarPrefab;
     public Text start_text;
     public List<GameObject> Stage = new List<GameObject>();
@@ -25,11 +31,8 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        /*isGo = true;
-        isStop = false;*/
-        videoscreen.gameObject.SetActive(false);
-        
 
+        
         GameObject player = GameObject.FindWithTag("Player");
         if (player)
         {
@@ -37,8 +40,24 @@ public class GameController : MonoBehaviour
             GameObject car = Instantiate(CarPrefab[carIndex]);
             car.transform.SetParent(player.transform);
             car.transform.localPosition = new Vector3(0, 0, 0);
-
         }
+
+        stageNextButton.onClick.AddListener(() => // 클리어하고 스테이지화면으로 돌아감
+        { 
+            SceneManager.LoadScene("MainScene");
+            Debug.Log("stagenext");
+            isStageNext = true;
+            End_screen.isTrigger = false;
+            End_screen.isCameraOff = false;
+        });
+
+        tutorialNextButton.onClick.AddListener(() => // 클리어하고 메인화면으로 돌아감
+        {         
+            SceneManager.LoadScene("MainScene");
+            Debug.Log("tutorialnext");
+            isTutorialNext = true;        
+        });
+
 
         if (UIManager.isTutorial == true)
         {
@@ -49,13 +68,20 @@ public class GameController : MonoBehaviour
 
                 skipButton.onClick.AddListener(() =>
                 {
-                    videoscreen.gameObject.SetActive(false);
-                    video.Stop();
+                    /*videoscreen.gameObject.SetActive(false);
+                    video.Stop();*/
+
+                    SceneManager.LoadScene("MainScene");
                 });
             }
              
             start_text.text = "리듬에 맞춰 터치하세요";
-            Instantiate(Stage[0]);
+            Stage[0].gameObject.SetActive(true);
+            Stage[1].gameObject.SetActive(false);
+            Stage[2].gameObject.SetActive(false);
+            Stage[3].gameObject.SetActive(false);
+            Stage[4].gameObject.SetActive(false);
+            //Instantiate(EndTrigger, new Vector3(5.15f, 0.7f, 3.6f), Quaternion.identity);
         }
         if(UIManager.isStage == true)
         {
@@ -64,43 +90,42 @@ public class GameController : MonoBehaviour
 
             if (UIManager.isStage_1 == true)
             {
-                
-                Instantiate(Stage[1]);
+
+                Stage[0].gameObject.SetActive(false);
+                Stage[1].gameObject.SetActive(true);
+                Stage[2].gameObject.SetActive(false);
+                Stage[3].gameObject.SetActive(false);
+                Stage[4].gameObject.SetActive(false);
             }
             if (UIManager.isStage_2 == true)
             {
-                Instantiate(Stage[2]);
+                Stage[0].gameObject.SetActive(false);
+                Stage[1].gameObject.SetActive(false);
+                Stage[2].gameObject.SetActive(true);
+                Stage[3].gameObject.SetActive(false);
+                Stage[4].gameObject.SetActive(false);
             }
             if (UIManager.isStage_3 == true)
             {
-                Instantiate(Stage[3]);
+                Stage[0].gameObject.SetActive(false);
+                Stage[1].gameObject.SetActive(false);
+                Stage[2].gameObject.SetActive(false);
+                Stage[3].gameObject.SetActive(true);
+                Stage[4].gameObject.SetActive(false);
             }
             if (UIManager.isStage_4 == true)
             {
-                Instantiate(Stage[4]);
+                Stage[0].gameObject.SetActive(false);
+                Stage[1].gameObject.SetActive(false);
+                Stage[2].gameObject.SetActive(false);
+                Stage[3].gameObject.SetActive(false);
+                Stage[4].gameObject.SetActive(true);
             }
-        }
-    }
-
-    void Update()
-    {
-        /*if(Movement.isResume == true)
-        {
-            time.text = countdown.ToString("0");
-            if (countdown > 1)
+            
+            if(Movement.isDestroy == true)
             {
-                isGo = false;
-                isStop = true;
-                countdown -= Time.deltaTime;
-                time.gameObject.SetActive(true);
+                
             }
-            else // countdown이 0이 될 때
-            {
-                isGo = true;
-                isStop = false;
-                Movement.isResume = false;
-                time.gameObject.SetActive(false);
-            }
-        }*/
-    }
+        }      
+    }   
 }
