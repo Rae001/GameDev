@@ -58,6 +58,8 @@ public class End_screen : MonoBehaviour
             Movement.Started = false;
             Movement.isAlive = false;
             isClear = true;
+            isTrigger = true;
+            isCameraOff = true;
         }
     }
      public void End()

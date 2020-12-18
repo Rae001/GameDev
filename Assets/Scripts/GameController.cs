@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
     public GameObject videoscreen;
     public GameObject Endscreen;
     public GameObject TutorialEndscreen;
-    //public GameObject EndTrigger;
+    public GameObject EndTrigger;
 
     public Button skipButton;
     public Button stageNextButton;
@@ -31,8 +31,25 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        if (UIManager.isStage_1 == true)
+        {
+            EndTrigger.transform.position = new Vector3(-346.83f, 1.44f, 489.81f);
+        }
+        if (UIManager.isStage_2 == true)
+        {
+            EndTrigger.transform.position = new Vector3(-352.8f, 1.44f, 371.7f);
+        }
+        if (UIManager.isStage_3 == true)
+        {
+            EndTrigger.transform.position = new Vector3(-402.83f, 1.44f, 412.59f);
+        }
+        if (UIManager.isStage_4 == true)
+        {
+            EndTrigger.transform.position = new Vector3(-422.5771f, 3.160274f, 421.24f);
+        }
 
-        
+
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player)
         {
@@ -55,7 +72,9 @@ public class GameController : MonoBehaviour
         {         
             SceneManager.LoadScene("MainScene");
             Debug.Log("tutorialnext");
-            isTutorialNext = true;        
+            isTutorialNext = true;
+            End_screen.isTrigger = false;
+            End_screen.isCameraOff = false;
         });
 
 
@@ -68,10 +87,10 @@ public class GameController : MonoBehaviour
 
                 skipButton.onClick.AddListener(() =>
                 {
-                    /*videoscreen.gameObject.SetActive(false);
-                    video.Stop();*/
+                    videoscreen.gameObject.SetActive(false);
+                    video.Stop();
 
-                    SceneManager.LoadScene("MainScene");
+                    //SceneManager.LoadScene("MainScene");
                 });
             }
              
@@ -81,7 +100,7 @@ public class GameController : MonoBehaviour
             Stage[2].gameObject.SetActive(false);
             Stage[3].gameObject.SetActive(false);
             Stage[4].gameObject.SetActive(false);
-            //Instantiate(EndTrigger, new Vector3(5.15f, 0.7f, 3.6f), Quaternion.identity);
+            
         }
         if(UIManager.isStage == true)
         {
@@ -90,7 +109,7 @@ public class GameController : MonoBehaviour
 
             if (UIManager.isStage_1 == true)
             {
-
+                
                 Stage[0].gameObject.SetActive(false);
                 Stage[1].gameObject.SetActive(true);
                 Stage[2].gameObject.SetActive(false);
